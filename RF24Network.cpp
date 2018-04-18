@@ -80,6 +80,8 @@ RF24Network::RF24Network( RF24& _radio, RF24& _radio1 ): radio(_radio), radio1(_
 #endif
 /******************************************************************/
 
+  const static unsigned int max_frame_payload_size = MAX_FRAME_SIZE-sizeof(RF24NetworkHeader);
+
 void RF24Network::begin(uint8_t _channel, uint16_t _node_address )
 {
   if (! is_valid_address(_node_address) )

@@ -338,7 +338,7 @@ struct RF24NetworkHeader
    *
    * @return String representation of this object
    */
-  const char* toString(void) const;
+  // const char* toString(void) const;
 
 };
 
@@ -507,8 +507,9 @@ public:
    * @param _radio The underlying radio driver instance
    * @param _radio1 The second underlying radio driver instance
    */
-   
+#if defined ENABLE_SLEEP_MODE
   RF24Network( RF24& _radio, RF24& _radio1); 
+#endif
   
 	/**
 	* By default, multicast addresses are divided into levels. 
@@ -535,6 +536,7 @@ public:
 	
 	bool multicastRelay;
 
+#if defined ENABLE_SLEEP_MODE
  /**
    * Set up the watchdog timer for sleep mode using the number 0 through 10 to represent the following time periods:<br>
    * wdt_16ms = 0, wdt_32ms, wdt_64ms, wdt_128ms, wdt_250ms, wdt_500ms, wdt_1s, wdt_2s, wdt_4s, wdt_8s
@@ -544,7 +546,7 @@ public:
    * @param prescalar The WDT prescaler to define how often the node will wake up. When defining sleep mode cycles, this time period is 1 cycle.
    */
  void setup_watchdog(uint8_t prescalar);
-
+#endif
     /**
    * @note: This value is automatically assigned based on the node address
    * to reduce errors and increase throughput of the network.
@@ -585,8 +587,10 @@ public:
    * @endcode  
    *
    */
+#if defined (ENABLE_NETWORK_STATS)
   void failures(uint32_t *_fails, uint32_t *_ok);
-  
+#endif
+
    #if defined (RF24NetworkMulticast)
   
   /**
@@ -638,8 +642,9 @@ public:
    * @param interruptPin: The interrupt number to use (0,1) for pins two and three on Uno,Nano. More available on Mega etc.
    * @return True if sleepNode completed normally, after the specified number of cycles. False if sleep was interrupted
    */
+#if defined ENABLE_SLEEP_MODE
  bool sleepNode( unsigned int cycles, int interruptPin, uint8_t INTERRUPT_MODE=0); //added interrupt mode support (default 0=LOW)
-
+#endif
 
   /**
    * This node's parent address
@@ -813,7 +818,7 @@ public:
   uint16_t node_address; /**< Logical node address of this unit, 1 .. UINT_MAX */
   //const static int frame_size = 32; /**< How large is each frame over the air */
   uint8_t frame_size;
-  const static unsigned int max_frame_payload_size = MAX_FRAME_SIZE-sizeof(RF24NetworkHeader);
+  // const static unsigned int max_frame_payload_size = MAX_FRAME_SIZE-sizeof(RF24NetworkHeader);
 
   #if defined (RF24_LINUX)
     std::queue<RF24NetworkFrame> frame_queue;
